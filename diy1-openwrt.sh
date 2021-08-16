@@ -1,5 +1,6 @@
-#!binbash
+#!/bin/bash
 #
+###
 # File name diy1-openwrt.sh
 # Description OpenWrt DIY script part 1 (Before Update feeds)
 
