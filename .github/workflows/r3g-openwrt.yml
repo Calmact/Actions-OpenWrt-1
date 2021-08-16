@@ -17,19 +17,19 @@ on:
       ssh:
         description: 'SSH connection to Actions'
         required: true
-        default: 'false'
-  schedule:
-    - cron: 0 18 * * *
-#  watch:
-#    types: started
+        default: 'true'
+#   schedule:
+#     - cron: 0 18 * * *
+  watch:
+    types: started
 
 env:
   REPO_URL: https://github.com/openwrt/openwrt
   REPO_BRANCH: master
   FEEDS_CONF: feeds.conf.default
-  CONFIG_FILE: config/r3g1.config
-  DIY_P1_SH: diy-part1.sh
-  DIY_P2_SH: diy-part2.sh
+  CONFIG_FILE: config/r3g-openwrt.config
+  DIY_P1_SH: diy1-openwrt.sh
+  DIY_P2_SH: diy2-openwrt.sh
   UPLOAD_BIN_DIR: true
   UPLOAD_FIRMWARE: true
   UPLOAD_COWTRANSFER: true
