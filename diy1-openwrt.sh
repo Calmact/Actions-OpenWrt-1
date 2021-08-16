@@ -1,14 +1,7 @@
 #!binbash
 #
-# Copyright (c) 2019-2020 P3TERX httpsp3terx.com
-#
-# This is free software, licensed under the MIT License.
-# See LICENSE for more information.
-#
-# httpsgithub.comP3TERXActions-OpenWrt
-# File name diy-part1.sh
+# File name diy1-openwrt.sh
 # Description OpenWrt DIY script part 1 (Before Update feeds)
-#
 
 # Uncomment a feed source
 #sed -i 's^#(.helloworld)1' feeds.conf.default
