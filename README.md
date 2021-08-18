@@ -113,64 +113,6 @@ Actions-OpenWrt — 多设备固件自动云编译 [![](https://img.shields.io/b
 | 25 |   [![](https://img.shields.io/badge/OpenWrt-NANOPI--R4S-lightgrey)](https://github.com/MrH723/Actions-OpenWrt/actions?query=workflow%3A%22Build+NanoPi-R4S+OpenWrt%22)    | [![Build NanoPi-R4S OpenWrt](https://github.com/MrH723/Actions-OpenWrt/workflows/Build%20NanoPi-R4S%20OpenWrt/badge.svg)](https://github.com/MrH723/Actions-OpenWrt/actions?query=workflow%3A%22Build+NanoPi-R4S+OpenWrt%22) |
 | 26 |   [![](https://img.shields.io/badge/OpenWrt-XIAOMI--AX3600-yellowgreen)](https://github.com/MrH723/Actions-OpenWrt/actions/workflows/mi_ax3600.yml)    | [![Build Xiaomi AX3600 OpenWrt](https://github.com/MrH723/Actions-OpenWrt/actions/workflows/mi_ax3600.yml/badge.svg)](https://github.com/MrH723/Actions-OpenWrt/actions/workflows/mi_ax3600.yml) |
 
--- 百度云盘下载 （测试）
--------------
-
-链接: https://pan.baidu.com/s/1e89hoFkzR3kBsf7oHlTdKw 提取码: ctw4 
-
--- 微软 OneDrive 下载地址 （测试）
--------------
-
-https://losaiiis-my.sharepoint.com/:f:/g/personal/hzj_ouuo_ml/Eu2LuOIwJpBMrNQd7tst1hsBZj8SujgtZn_QjaXIT31y7Q?e=jDXq0x
-
--- 关于自动编译固件的说明 [![](https://img.shields.io/badge/-自动编译说明-lightgrey.svg)](#自动编译说明-)
--------------
-
-- 不建议Fork，按需下载即可。
-- 自动编译，自动拉取最新版本插件。
-- x86多拨极简版为自用固件仅包含 （pw,S,上网时间控制，upnp,ddns,去广告，多拨，负载均衡，流量监控，主题只加入了默认主题以及自己比较喜欢的edge主题）
-- x86旁路由极简版为自用，建议配合爱快使用，仅包含（pw，S，去广告，主题只加入了默认主题以及自己比较喜欢的edge主题）
-- 请注意脚本不编译x86-32位版本。
-- 经过几天的观察发现，部分固件编译结果显示失败，但是实际上是成功的，具体情况请点击进入下载链接查看。
-
--- 最近更新 [![](https://img.shields.io/badge/-最近更新-lightgrey.svg)](#最近更新-)
--------------
-- 更新 P3TERX 大大的编译源码[![](https://img.shields.io/badge/P3TERX-源码-orange.svg)](https://github.com/P3TERX/Actions-OpenWrt)，解决编译提示 set-env 即将被禁用
-- 添加新设备 Netgear WNDR 3800 固件的编译
-- 添加新设备 Linksys WRT1900 固件的编译
-- 添加新设备 友华 WR1200JS 固件的编译
-- 添加新设备 NANO-PI R4S 固件的编译
-- 添加新设备 小米 AX3600 固件的编译
-- 
-赞助 [![](https://img.shields.io/badge/-赞助项目-green.svg)](#赞助项目-)
-======================
-- 您要是觉得好用不错的话，不妨考虑赞助一下本项目。
-
-<img src="https://github.com/MrH723/Actions-OpenWrt/blob/main/img/alipay.jpg?raw=true" width="160" height="180" />
-
-我用过的机场 [![](https://img.shields.io/badge/-机场推荐-green.svg)](#机场推荐-)
-======================
-- iplc.vip, 最好的机场，没有之一，全IPLC节点，全1倍率，无倍率套路，用不完的剩余流量还可以折现，价格稍高，但绝对物超所值！
-
-[iplc.vip]  [![](https://img.shields.io/badge/全IPLC节点机场-iplc.vip-brightgreen.svg)](https://portal.iplc-j.pw/aff.php?aff=1228)
-
-<details>
-<summary>IPLC.vip 节点测速</summary>
-<img src="https://github.com/MrH723/Actions-OpenWrt/blob/main/img/speed.png?raw=true" width="890" hight="1080">
-   
-   *测试结果来自bigdongdong [![](https://img.shields.io/badge/bigdongdong-Github-orange.svg)](https://github.com/bigdongdongCLUB)
-</details>
-
-
-- 心阶，入门级别机场，也是我第一个使用的机场，性价比高，有时会挂。
-
-[心阶]  [![](https://img.shields.io/badge/心阶-xinjiecloud-brightgreen.svg)](https://www.xinjiecloud.vip/auth/register?code=e9yu)
-
-- 西部世界，不少的trojan节点，但是速度一般。有时会挂。想要使用trojan协议的朋友可以酌情斟酌购买
-
-[西部世界]  [![](https://img.shields.io/badge/西部世界-westworldss-brightgreen.svg)](https://xbnet.site/i/iv201020/KKPgMHE)
-
-鸣谢 [![](https://img.shields.io/badge/-鸣谢-green.svg)](#鸣谢-)
 ======================
  
 [P3TERX 的 Action 源码] [![](https://img.shields.io/badge/P3TERX-源码-orange.svg)](https://github.com/P3TERX/Actions-OpenWrt)
@@ -182,12 +124,5 @@ https://losaiiis-my.sharepoint.com/:f:/g/personal/hzj_ouuo_ml/Eu2LuOIwJpBMrNQd7t
 [Lienol] [![](https://img.shields.io/badge/Lienol-%E6%BA%90%E7%A0%81-orange.svg)](https://github.com/Lienol)
 
 [Kenzok8] [![](https://img.shields.io/badge/Kenzok8-%E6%BA%90%E7%A0%81-orange.svg)](https://github.com/kenzok8)
-
-
-免责声明 [![](https://img.shields.io/badge/-免责声明-green.svg)](#免责声明-)
-======================
-***- 由于本人小白，有可能使用到了大神的代码，没有放进鸣谢名单里的，请联系添加，再次感谢各位大神的贡献***
-
-***- 请务必遵从‘不涉及政治，不涉及宗教，不涉及黄赌毒’的三不原则***
 
 
