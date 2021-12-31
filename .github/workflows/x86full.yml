@@ -8,7 +8,7 @@
 # Description: Build OpenWrt using GitHub Actions
 #
 
-name: x86full OpenWrt
+name: j1900_x86 OpenWrt
 
 on:
   repository_dispatch:
@@ -24,13 +24,13 @@ on:
 #    types: started
 
 env:
-  REPO_URL: https://github.com/coolsnowwolf/lede
+  REPO_URL: https://www.github.com/openwrt/openwrt
   REPO_BRANCH: master
   FEEDS_CONF: feeds.conf.default
-  CONFIG_FILE: config/x86duobo.config
-  DIY_P1_SH: diy-part1.sh
-  DIY_P2_SH: diy-part2.sh
-  UPLOAD_BIN_DIR: false
+  CONFIG_FILE: config/j1900.config
+  DIY_P1_SH: diyJ1900-part1.sh
+  DIY_P2_SH: diyJ1900-part2.sh
+  UPLOAD_BIN_DIR: true
   UPLOAD_FIRMWARE: true
   UPLOAD_COWTRANSFER: true
   UPLOAD_WETRANSFER: true
@@ -69,6 +69,8 @@ jobs:
         chmod +x $DIY_P1_SH
         cd openwrt
         $GITHUB_WORKSPACE/$DIY_P1_SH
+        git clone https://github.com/BROBIRD/openwrt-r8168 ./package/r8168
+
     - name: Update feeds
       run: cd openwrt && ./scripts/feeds update -a
 
@@ -94,7 +96,8 @@ jobs:
       run: |
         cd openwrt
         make defconfig
-        make download -j8
+        make download -j8 V=99 2>&1 | tee download.log
+        make check | tee check.log
         find dl -size -1024c -exec ls -l {} \;
         find dl -size -1024c -exec rm -f {} \;
     - name: Compile the firmware
@@ -102,11 +105,21 @@ jobs:
       run: |
         cd openwrt
         echo -e "$(nproc) thread compile"
-        make -j$(nproc) || make -j2 || make -j2 V=s
+        make -j$(nproc) V=99 2>&1 | tee build.log|| make -j2 V=99 2>&1 | tee build.log
         echo "::set-output name=status::success"
         grep '^CONFIG_TARGET.*DEVICE.*=y' .config | sed -r 's/.*DEVICE_(.*)=y/\1/' > DEVICE_NAME
         [ -s DEVICE_NAME ] && echo "DEVICE_NAME=_$(cat DEVICE_NAME)" >> $GITHUB_ENV
-        echo "FILE_DATE=_$(date +"%Y%m%d%H%M")" >> $GITHUB_ENV
+        echo "FILE_DATE=_$(date +"%Y%m%d%H%M")" >> $GITHUB_ENV 
+
+    - name: Organize config and log files
+      id: organize
+      run: |
+        cd openwrt
+        mv download.log bin/targets/*/*/download.log
+        mv check.log bin/targets/*/*/check.log
+        mv build.log bin/targets/*/*/build.log
+        mv .config bin/targets/*/*/.config     
+                
     - name: Check space usage
       if: (!cancelled())
       run: df -hT
@@ -126,6 +139,7 @@ jobs:
         rm -rf packages
         echo "FIRMWARE=$PWD" >> $GITHUB_ENV
         echo "::set-output name=status::success"
+        
     - name: Upload firmware directory
       uses: actions/upload-artifact@main
       if: steps.organize.outputs.status == 'success' && !cancelled()
