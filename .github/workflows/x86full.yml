@@ -1,4 +1,4 @@
-#
+﻿#
 # Copyright (c) 2019-2020 P3TERX <https://p3terx.com>
 #
 # This is free software, licensed under the MIT License.
@@ -112,7 +112,6 @@ jobs:
         echo "FILE_DATE=_$(date +"%Y%m%d%H%M")" >> $GITHUB_ENV 
 
     - name: Organize config and log files
-      id: organize
       run: |
         cd openwrt
         mv download.log bin/targets/*/*/download.log
