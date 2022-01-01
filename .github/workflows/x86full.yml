@@ -11,7 +11,9 @@
 name: j1900_x86 OpenWrt
 
 on:
-  [push]
+  push:
+    branches:
+      - main
   repository_dispatch:
   workflow_dispatch:
     inputs:
