@@ -117,10 +117,11 @@ jobs:
     - name: Organize config and log files
       run: |
         cd openwrt
-        mv download.log /bin/targets/*/*/download.log
-        mv check.log /bin/targets/*/*/check.log
-        mv build.log /bin/targets/*/*/build.log
-        mv .config /bin/targets/*/*/.config     
+        mv .config ./bin/targets/x86/64/.config  
+        mv feeds.conf.default ./bin/targets/x86/64/feeds.conf.default  
+        mv download.log ./bin/targets/x86/64/download.log
+        mv check.log ./bin/targets/x86/64/check.log
+        mv build.log ./bin/targets/x86/64/build.log   
                 
     - name: Check space usage
       if: (!cancelled())
