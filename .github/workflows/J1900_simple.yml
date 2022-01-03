@@ -10,7 +10,7 @@
 
 name: j1900_simple OpenWrt
 
-on:
+on: 
   push:
     branches:
       - main
