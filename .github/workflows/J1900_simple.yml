@@ -1,4 +1,4 @@
-﻿#
+#
 # Copyright (c) 2019-2020 P3TERX <https://p3terx.com>
 #
 # This is free software, licensed under the MIT License.
@@ -8,7 +8,7 @@
 # Description: Build OpenWrt using GitHub Actions
 #
 
-name: j1900_x86 OpenWrt
+name: j1900_simple OpenWrt
 
 on:
   push:
@@ -30,7 +30,7 @@ env:
   REPO_URL: https://www.github.com/openwrt/openwrt
   REPO_BRANCH: master
   FEEDS_CONF: feeds.conf.default
-  CONFIG_FILE: config/j1900.config
+  CONFIG_FILE: config/j1900s.config
   DIY_P1_SH: diyJ1900-part1.sh
   DIY_P2_SH: diyJ1900-part2.sh
   UPLOAD_BIN_DIR: true
@@ -87,6 +87,7 @@ jobs:
         chmod +x $DIY_P2_SH
         cd openwrt
         $GITHUB_WORKSPACE/$DIY_P2_SH
+
     - name: SSH connection to Actions
       uses: P3TERX/ssh2actions@v1.0.0
       if: (github.event.inputs.ssh == 'true' && github.event.inputs.ssh  != 'false') || contains(github.event.action, 'ssh')
