@@ -141,10 +141,10 @@ jobs:
       run: |
         cd openwrt
         [ -e .config ] && mv .config ./bin/targets/x86/64/.config  
-        [ -e feeds.conf.default  ] && mv feeds.conf.default ./bin/targets/x86/64/feeds.conf.default  
+        [ -e feeds.conf.default ] && mv feeds.conf.default ./bin/targets/x86/64/feeds.conf.default  
         [ -e download.log ] && mv download.log ./bin/targets/x86/64/download.log
-        [ -e check.log  ] && mv check.log ./bin/targets/x86/64/check.log
-        [ -e build_j8.log  ] && mv build_j8.log ./bin/targets/x86/64/build_j8.log 
+        [ -e check.log ] && mv check.log ./bin/targets/x86/64/check.log
+        [ -e build_j8.log ] && mv build_j8.log ./bin/targets/x86/64/build_j8.log 
         [ -e build_j2.log ] && mv build_j2.log ./bin/targets/x86/64/build_j2.log   
                 
     - name: Check space usage
