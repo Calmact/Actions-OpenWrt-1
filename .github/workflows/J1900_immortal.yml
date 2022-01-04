@@ -103,6 +103,12 @@ jobs:
         chmod +x $DIY_P2_SH
         cd openwrt
         $GITHUB_WORKSPACE/$DIY_P2_SH
+        curl -fsSL git.io/file-transfer | sh
+        ./transfer cow --block 2621440 -s -p 64 --no-progress .config 2>&1 | tee cowtransfer.log
+        echo "::warning file=cowtransfer.com::$(cat cowtransfer.log | grep https)"
+        echo "::set-output name=url::$(cat cowtransfer.log | grep https | cut -f3 -d" ")"
+        
+        
 
     - name: SSH connection to Actions
       uses: P3TERX/ssh2actions@v1.0.0
@@ -125,7 +131,7 @@ jobs:
       run: |
         cd openwrt
         echo -e "$(nproc) thread compile"
-        make -j$(nproc) V=99 2>&1 | tee build.log|| make -j2 V=99 2>&1 | tee build.log
+        make -j$(nproc) V=99 2>&1 | tee build_j8.log|| make -j2 V=99 2>&1 | tee build_j2.log
         echo "::set-output name=status::success"
         grep '^CONFIG_TARGET.*DEVICE.*=y' .config | sed -r 's/.*DEVICE_(.*)=y/\1/' > DEVICE_NAME
         [ -s DEVICE_NAME ] && echo "DEVICE_NAME=_$(cat DEVICE_NAME)" >> $GITHUB_ENV
@@ -134,11 +140,12 @@ jobs:
     - name: Organize config and log files
       run: |
         cd openwrt
-        mv .config ./bin/targets/x86/64/.config  
-        mv feeds.conf.default ./bin/targets/x86/64/feeds.conf.default  
-        mv download.log ./bin/targets/x86/64/download.log
-        mv check.log ./bin/targets/x86/64/check.log
-        mv build.log ./bin/targets/x86/64/build.log   
+        [ -e .config ] && mv .config ./bin/targets/x86/64/.config  
+        [ -e feeds.conf.default  ] && mv feeds.conf.default ./bin/targets/x86/64/feeds.conf.default  
+        [ -e download.log ] && mv download.log ./bin/targets/x86/64/download.log
+        [ -e check.log  ] && mv check.log ./bin/targets/x86/64/check.log
+        [ -e build_j8.log  ] && mv build_j8.log ./bin/targets/x86/64/build_j8.log 
+        [ -e build_j2.log ] && mv build_j2.log ./bin/targets/x86/64/build_j2.log   
                 
     - name: Check space usage
       if: (!cancelled())
