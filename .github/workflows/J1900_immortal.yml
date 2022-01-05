@@ -67,12 +67,14 @@ jobs:
         sudo timedatectl set-timezone "$TZ"
         sudo mkdir -p /workdir
         sudo chown $USER:$GROUPS /workdir
+        
     - name: Clone source code
       working-directory: /workdir
       run: |
         df -hT $PWD
         git clone -b $REPO_BRANCH --single-branch $REPO_URL  openwrt
         ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
+        
     - name: Load custom feeds
       run: |
         [ -e $FEEDS_CONF ] && mv $FEEDS_CONF openwrt/feeds.conf.default
@@ -81,15 +83,28 @@ jobs:
         #$GITHUB_WORKSPACE/$DIY_P1_SH        
         #echo 'src-git kenzok8_small_package https://github.com/kenzok8/small-package' >>feeds.conf.default
         git clone https://github.com/BROBIRD/openwrt-r8168 ./package/r8168
-
+        git clone https://github.com/sirpdboy/netspeedtest ./package/netspeedtest
+        git clone https://github.com/sirpdboy/luci-app-poweroffdevice ./package/luci-app-poweroffdevice
+        svn export https://github.com/messense/aliyundrive-webdav/trunk/openwrt ./package/aliyunwebdav
+        svn export https://github.com/coolsnowwolf/lede/trunk/package/lean/luci-app-pptp-server ./lean/luci-app-pptp-server 
+        
+        #install aliyunwebdav
+        #cd package
+        #mkdir aliyunwebdav
+        #cd aliyunwebdav
+        #git init
+        #git remote add origin https://github.com/messense/aliyundrive-webdav
+        #git config core.sparsecheckout true
+        #echo openwrt/ >> .git/info/sparse-checkout
+        #git pull origin main
+        #cd ../..
+        
     - name: Update feeds
       run: cd openwrt && ./scripts/feeds update -a
 
     - name: Install feeds
       run: cd openwrt && ./scripts/feeds install -a
-
-
-
+ 
     - name: SSH connection to Actions
       uses: P3TERX/ssh2actions@v1.0.0
       if: (github.event.inputs.ssh == 'true' && github.event.inputs.ssh  != 'false') || contains(github.event.action, 'ssh')
@@ -134,7 +149,7 @@ jobs:
 
     - name: SSH connection to Actions
       uses: P3TERX/ssh2actions@v1.0.0
-      if: (github.event.inputs.ssh == 'true' && github.event.inputs.ssh  != 'false') || contains(github.event.action, 'ssh')
+      #if: (github.event.inputs.ssh == 'true' && github.event.inputs.ssh  != 'false') || contains(github.event.action, 'ssh')
       env:
         TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
