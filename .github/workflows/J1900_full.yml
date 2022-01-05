@@ -11,9 +11,9 @@
 name: j1900_x86 OpenWrt
 
 on:
-  push:
-    branches:
-      - main
+#  push:
+#    branches:
+#      - main
   repository_dispatch:
   workflow_dispatch:
     inputs:
@@ -21,8 +21,8 @@ on:
         description: 'SSH connection to Actions'
         required: true
         default: 'false'
-  schedule:
-    - cron: 0 19 * * *
+#  schedule:
+#    - cron: 0 19 * * *
 #  watch:
 #    types: started
 
