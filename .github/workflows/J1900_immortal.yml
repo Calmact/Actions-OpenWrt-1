@@ -8,6 +8,8 @@
 # Description: Build OpenWrt using GitHub Actions
 #
 
+# pciutils
+
 name: j1900_x86 immortalWrt
 
 on:
