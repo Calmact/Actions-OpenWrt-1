@@ -11,6 +11,9 @@
 name: Build Mi r3g1 OpenWrt
 
 on:
+  push:
+    branches:
+      - main
   repository_dispatch:
   workflow_dispatch:
     inputs:
@@ -19,7 +22,7 @@ on:
         required: true
         default: 'false'
   schedule:
-    - cron: 0 03 * * *
+    - cron: 0 19 * * *
   watch:
     types: started
 
