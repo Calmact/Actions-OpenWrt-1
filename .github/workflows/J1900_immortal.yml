@@ -143,11 +143,6 @@ jobs:
          [ -z $(grep "CONFIG_KERNEL_BUILD_DOMAIN=" .config) ] &&
              echo 'CONFIG_KERNEL_BUILD_DOMAIN="GitHub Actions"' >>.config ||
              sed -i 's@\(CONFIG_KERNEL_BUILD_DOMAIN=\).*@\1$"GitHub Actions"@' .config
-        
-        curl -fsSL git.io/file-transfer | sh
-        ./transfer wet -s -p 16 --no-progress .config 2>&1 | tee wetransfer.log
-        echo "::warning file=wetransfer.com::$(cat wetransfer.log | grep https)"
-        echo "::set-output name=url::$(cat wetransfer.log | grep https | cut -f3 -d" ")"       
 
     - name: SSH connection to Actions
       uses: P3TERX/ssh2actions@v1.0.0
@@ -155,6 +150,14 @@ jobs:
       env:
         TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+
+    - name: Upload config file
+      id: package
+      run: |
+        cd openwrt
+        curl -fsSL git.io/file-transfer | sh
+        ./transfer wet -s -p 16 --no-progress .config 2>&1 | tee wetransfer.log
+        echo "::warning file=wetransfer.com::$(cat wetransfer.log | grep https)"
 
     - name: Download package
       id: package

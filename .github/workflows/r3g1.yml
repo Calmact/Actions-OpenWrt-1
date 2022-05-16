@@ -20,7 +20,7 @@ on:
       ssh:
         description: 'SSH connection to Actions'
         required: true
-        default: 'false'
+        default: 'True'
   schedule:
     - cron: 0 19 * * *
   watch:
@@ -30,7 +30,7 @@ env:
   REPO_URL: https://github.com/coolsnowwolf/lede
   REPO_BRANCH: master
   FEEDS_CONF: feeds.conf.default
-  CONFIG_FILE: config/r3g2.config
+  CONFIG_FILE: config/r3g3.config
   DIY_P1_SH: diy-part1.sh
   DIY_P2_SH: diy-part2.sh
   UPLOAD_BIN_DIR: true
@@ -70,9 +70,13 @@ jobs:
     - name: Load custom feeds
       run: |
         [ -e $FEEDS_CONF ] && mv $FEEDS_CONF openwrt/feeds.conf.default
-        chmod +x $DIY_P1_SH
+        #chmod +x $DIY_P1_SH
         cd openwrt
-        $GITHUB_WORKSPACE/$DIY_P1_SH
+        #$GITHUB_WORKSPACE/$DIY_P1_SH
+        sed -i '$a src-git lienol https://github.com/Lienol/openwrt-package' feeds.conf.default
+        sed -i '$a src-git MrH723 https://github.com/MrH723/openwrt-packages' feeds.conf.default
+        # git clone https://github.com/MrH723/openwrt-packages.git package/openwrt-packages
+        echo 'src-git helloworld https://github.com/fw876/helloworld' >>feeds.conf.default
 
     - name: Update feeds
       run: cd openwrt && ./scripts/feeds update -a
@@ -84,9 +88,40 @@ jobs:
       run: |
         [ -e files ] && mv files openwrt/files
         [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
-        chmod +x $DIY_P2_SH
+        # chmod +x $DIY_P2_SH
         cd openwrt
-        $GITHUB_WORKSPACE/$DIY_P2_SH
+        # $GITHUB_WORKSPACE/$DIY_P2_SH
+        # Modify default IP
+        sed -i 's/192.168.1.1/192.168.30.1/g' package/base-files/files/bin/config_generate
+        sed -i 's/192.168.1.1/192.168.30.3/g' .config
+        sed -i 's/192.168.1.255/192.168.30.255/g' .config
+
+        # Modify hostname
+        sed -i 's/OpenWrt/OpenWrt-Calmact/g' package/base-files/files/bin/config_generate
+
+        # Modify the version number
+        sed -i "s/OpenWrt /Calmact build $(TZ=UTC-8 date "+%Y.%m.%d") @ OpenWrt /g" package/lean/default-settings/files/zzz-default-settings
+
+        # Modify default theme
+        #sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' feeds/luci/collections/luci/Makefile
+
+        
+        # 时区修改
+        sed -i "s/'UTC'/'CST-8'\n                set system.@system[-1].zonename='Asia\/Shanghai'/g" package/base-files/files/bin/config_generate
+
+
+        # 修改默认wifi名称ssid为Xiaomi_XXXX
+        sed -i 's/ssid=OpenWrt/ssid=Xiaomi_XXXX/g' package/kernel/mac80211/files/lib/wifi/mac80211.sh         
+
+        # Add kernel build user
+        [ -z $(grep "CONFIG_KERNEL_BUILD_USER=" .config) ] &&
+            echo 'CONFIG_KERNEL_BUILD_USER="Calmact"' >>.config ||
+            sed -i 's@\(CONFIG_KERNEL_BUILD_USER=\).*@\1$"Calmact"@' .config
+
+        # Add kernel build domain
+        [ -z $(grep "CONFIG_KERNEL_BUILD_DOMAIN=" .config) ] &&
+        echo 'CONFIG_KERNEL_BUILD_DOMAIN="GitHub Actions"' >>.config ||
+        sed -i 's@\(CONFIG_KERNEL_BUILD_DOMAIN=\).*@\1$"GitHub Actions"@' .config
 
     - name: SSH connection to Actions
       uses: P3TERX/ssh2actions@v1.0.0
@@ -94,6 +129,14 @@ jobs:
       env:
         TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+
+    - name: Upload config file
+      id: package
+      run: |
+        cd openwrt
+        curl -fsSL git.io/file-transfer | sh
+        ./transfer wet -s -p 16 --no-progress .config 2>&1 | tee wetransfer.log
+        echo "::warning file=wetransfer.com::$(cat wetransfer.log | grep https)"
 
     - name: Download package
       id: package
