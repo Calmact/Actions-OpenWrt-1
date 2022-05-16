@@ -131,7 +131,6 @@ jobs:
         TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
 
     - name: Upload config file
-      id: package
       run: |
         cd openwrt
         curl -fsSL git.io/file-transfer | sh
